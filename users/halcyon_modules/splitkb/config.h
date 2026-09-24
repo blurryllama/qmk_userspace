@@ -10,7 +10,9 @@
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_COMBINED
 
-#define HLC_BACKLIGHT_TIMEOUT 120000
+#ifndef HLC_BACKLIGHT_TIMEOUT
+#    define HLC_BACKLIGHT_TIMEOUT 120000 // can be overridden in a keymap config.h
+#endif
 
 #define BACKLIGHT_PWM_DRIVER PWMD5
 #define BACKLIGHT_LEVELS 10
