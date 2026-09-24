@@ -3,10 +3,10 @@
     "customKeycodes": [
         {"name": "OSK_INSPECT", "title": "Inspect: Ctrl+Shift+I / Cmd+Opt+I", "shortName": "Insp"},
         {"name": "OSK_SCREENSHOT", "title": "Screenshot: PrtScn / Cmd+Shift+5", "shortName": "Shot"},
-        {"name": "OSK_LOCK", "title": "Lock screen: Win+L / Ctrl+Cmd+Q", "shortName": "Lock"},
+        {"name": "OSK_LOCK", "title": "Lock screen: Win+L / Ctrl+Cmd+Q / lock key", "shortName": "Lock"},
         {"name": "OSK_FORCE_QUIT", "title": "Close / force quit: Alt+F4 / Cmd+Opt+Esc", "shortName": "Kill"},
         {"name": "OSK_CALC", "title": "Calculator: Calc key / Spotlight", "shortName": "Calc"},
-        {"name": "OSK_VOLUME_MIXER", "title": "Volume mixer: Ctrl+Alt+V / Sound settings", "shortName": "VolMx"},
+        {"name": "OSK_VOLUME_MIXER", "title": "Volume mixer: Ctrl+Alt+V / Sound settings (not Linux)", "shortName": "VolMx"},
         {"name": "OSK_POWER_MENU", "title": "Power user menu: Win+X (PC only)", "shortName": "WinX"}
     ],
     "matrix": {

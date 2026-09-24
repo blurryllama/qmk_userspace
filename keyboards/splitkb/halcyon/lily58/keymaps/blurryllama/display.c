@@ -165,7 +165,8 @@ static void draw_mod_pill(int16_t left, int16_t top, int16_t width, int16_t heig
     }
 }
 
-static void draw_mods(uint8_t mods, bool mac) {
+// The Alt and GUI labels follow the OS: OPT/CMD on Mac, ALT/WIN on Windows, ALT/SUP (Super) on Linux
+static void draw_mods(uint8_t mods, os_logo_t logo) {
     int16_t height = MOD_HEIGHT;
     int16_t width  = (LCD_WIDTH - 3 * MOD_GAP) / 2;
     int16_t col1 = MOD_GAP, col2 = MOD_GAP * 2 + width;
@@ -173,8 +174,10 @@ static void draw_mods(uint8_t mods, bool mac) {
 
     draw_mod_pill(col1, row1, width, height, "SHF", mods & MOD_MASK_SHIFT, LIGHT_PINK, BG);
     draw_mod_pill(col2, row1, width, height, "CTL", mods & MOD_MASK_CTRL, ACID, BG);
-    draw_mod_pill(col1, row2, width, height, mac ? "OPT" : "ALT", mods & MOD_MASK_ALT, CYAN, BG);
-    draw_mod_pill(col2, row2, width, height, mac ? "CMD" : "WIN", mods & MOD_MASK_GUI, VIOLET, WHITE);
+    const char *alt = logo == OS_LOGO_APPLE ? "OPT" : "ALT";
+    const char *gui = logo == OS_LOGO_APPLE ? "CMD" : logo == OS_LOGO_TUX ? "SUP" : "WIN";
+    draw_mod_pill(col1, row2, width, height, alt, mods & MOD_MASK_ALT, CYAN, BG);
+    draw_mod_pill(col2, row2, width, height, gui, mods & MOD_MASK_GUI, VIOLET, WHITE);
 }
 
 static bool status_redraw = true;
@@ -182,12 +185,10 @@ static bool status_redraw = true;
 static void update_status_display(void) {
     static uint8_t   last_layer;
     static bool      last_caps;
-    static bool      last_mac;
     static os_logo_t last_logo;
     static uint8_t   last_mods;
 
     uint8_t layer = get_highest_layer(layer_state | default_layer_state);
-    bool    mac   = is_mac_mode();
     uint8_t   mods  = get_mods() | get_oneshot_mods();
     os_logo_t logo  = current_os_logo();
 
@@ -198,13 +199,12 @@ static void update_status_display(void) {
     if (status_redraw || logo != last_logo) {
         draw_os(logo, layer_bar_bottom() + 1, mods_top() - 1);
     }
-    if (status_redraw || mac != last_mac || mods != last_mods) {
-        draw_mods(mods, mac);
+    if (status_redraw || logo != last_logo || mods != last_mods) {
+        draw_mods(mods, logo);
     }
 
     last_layer    = layer;
     last_caps     = caps;
-    last_mac      = mac;
     last_logo     = logo;
     last_mods     = mods;
     status_redraw = false;
