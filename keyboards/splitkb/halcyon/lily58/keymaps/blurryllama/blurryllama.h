@@ -17,7 +17,8 @@ enum blurryllama_keycodes {
 
 // State the master half shares with the other half, for the displays
 typedef struct {
-    bool space_held;
+    bool    space_held;
+    uint8_t key_presses; // lets the other half notice typing, to keep its display awake
 } blurryllama_state_t;
 
 extern blurryllama_state_t bl_state;

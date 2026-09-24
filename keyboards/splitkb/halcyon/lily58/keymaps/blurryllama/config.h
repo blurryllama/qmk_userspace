@@ -45,7 +45,3 @@
 
 // blurryllama: turn the displays and backlight off after 10 minutes without typing (splitkb's default is 2)
 #define HLC_BACKLIGHT_TIMEOUT 600000
-
-// blurryllama: share typing activity with the other half, so its display doesn't time out
-// while you only type on this half
-#define SPLIT_ACTIVITY_ENABLE

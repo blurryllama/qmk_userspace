@@ -47,6 +47,9 @@ static void mac_open_calculator(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        bl_state.key_presses++;
+    }
     if (keycode == KC_SPC) {
         bl_state.space_held = record->event.pressed;
     }
@@ -85,7 +88,19 @@ void keyboard_post_init_user(void) {
 }
 
 void housekeeping_task_user(void) {
-    if (!is_keyboard_master() || !is_transport_connected()) {
+    // Typing on the other half counts as activity here too, so this half's display and backlight
+    // stay on. The time is taken from this half's own clock: QMK's SPLIT_ACTIVITY_ENABLE copies the
+    // other half's timestamp instead, which can be slightly in the future here and briefly makes
+    // the display think it has timed out.
+    if (!is_keyboard_master()) {
+        static uint8_t last_key_presses;
+        if (bl_state.key_presses != last_key_presses) {
+            last_key_presses = bl_state.key_presses;
+            set_activity_timestamps(sync_timer_read32(), last_encoder_activity_time(), last_pointing_device_activity_time());
+        }
+        return;
+    }
+    if (!is_transport_connected()) {
         return;
     }
 
